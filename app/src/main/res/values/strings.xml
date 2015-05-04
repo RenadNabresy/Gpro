@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewApp</string>
+    <string name="app_name">KeepHealth</string>
 
     <string name="title_section1">Category 1</string>
     <string name="title_section2">Category 2</string>
@@ -8,7 +8,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_example">Example action</string>
+    <string name="UserType_prompt">choose the user</string>
+    <string-array name="UserType">
+        <item>Patient</item>
+        <item>Doctor</item>
+    </string-array>
+
+    <string name="SignOut">Sign Out</string>
 
     <string name="action_settings">Settings</string>
 </resources>

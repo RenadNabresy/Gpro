@@ -7,6 +7,8 @@ import com.parse.SignUpCallback;
 
 public class User {
 
+
+
     User(String name, String email, String password, String phone) {
         ParseUser user = new ParseUser();
         user.setUsername(name);

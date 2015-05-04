@@ -1,6 +1,7 @@
 package com.google.gpro.newapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -8,13 +9,22 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.text.ParseException;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
@@ -36,15 +46,31 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+       // Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "01uXRlo3msYG9RffC5zewIKsbdvaXX9TfBcpBBDq", "4xqSbq48OpDaEIaLfgzyYMTLFam6qW0qVEaW8YR2");
+       // Parse.initialize(this, "01uXRlo3msYG9RffC5zewIKsbdvaXX9TfBcpBBDq", "4xqSbq48OpDaEIaLfgzyYMTLFam6qW0qVEaW8YR2");
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+       // User user = new User("Renado","renad.92.rno@gmail.com","123123","2949728");
 
+     /*   ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
+
+        query.whereEqualTo("email", "renad.92.rn@gmail.com");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> userList, com.parse.ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    byte[] data = "Working at Parse is great!".getBytes();
+                    ParseFile file = new ParseFile("resume.txt", data);
+                }
+            }
+        });
+*/
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -79,13 +105,13 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
+            case 0:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case 1:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 2:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
@@ -101,15 +127,13 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        //inflater.inflate(R.menu.global, menu);
+        //showGlobalContextActionBar();
+        getMenuInflater().inflate(R.menu.global, menu);
+        return true;
+
     }
 
     @Override
@@ -117,10 +141,13 @@ public class MainActivity extends ActionBarActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        int id = item.getItemId();
+        if (id == R.id.SignOut) {
+            (ParseUser.getCurrentUser()).logOut();
+            startActivity(new Intent(MainActivity.this ,Login.class));
+            finish();
             return true;
         }
 

@@ -20,4 +20,6 @@ public class Frag1 extends Fragment {
         rootview = inflater.inflate(R.layout.fragment_1, container, false);
         return rootview;
     }
+
+
 }
