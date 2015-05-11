@@ -105,6 +105,8 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
+                        getString(R.string.main_section),
+                        getString(R.string.profile),
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
@@ -237,27 +239,23 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
-       /* if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }*/
+        if (mDrawerLayout != null && isDrawerOpen()) {
+               showGlobalContextActionBar();
+        }
+        inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.new_post) {
+            Intent createNewPost = new Intent(getActivity(), Post.class);
+            startActivity(createNewPost);
+        }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.new_post) {
-            Intent createNewPost = new Intent(getActivity(),Post.class);
-            startActivity(createNewPost);
-
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

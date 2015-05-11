@@ -6,21 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.Fragment;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class Post extends ActionBarActivity{
+public class Post extends ActionBarActivity implements AdapterView.OnItemSelectedListener{
 
     protected EditText myPost;
     protected Button postButton;
+    protected Spinner spinner;
+    protected int selection;
 
 
     @Override
@@ -30,16 +34,24 @@ public class Post extends ActionBarActivity{
 
         myPost = (EditText)findViewById(R.id.post_text);
         postButton = (Button)findViewById(R.id.post_button);
+        spinner =(Spinner)findViewById(R.id.spinner);
+        selection= 1;
+
+        //Spinner Adapter
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this,R.array.CategoryOfPost,android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         //listen to button
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get the current user
-                //ParseUser currentUser = ParseUser.getCurrentUser();
-                //String currentUserName = currentUser.getUsername();
 
                 String newPost = myPost.getText().toString();
+                if(newPost.isEmpty()){
+                    Toast.makeText(Post.this, "You can't save empty post!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 final ProgressDialog dig=new ProgressDialog(Post.this);
                 dig.setTitle("Posting !!");
@@ -48,7 +60,9 @@ public class Post extends ActionBarActivity{
 
                 ParseObject post = new ParseObject("Post");
                 post.put("text",newPost);
-                post.put("CreatedBy",ParseUser.getCurrentUser());
+                post.put("C_num",selection);
+                post.put("createdBy",ParseUser.getCurrentUser().getObjectId());
+                post.put("NumOfLikes",0);
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -64,5 +78,17 @@ public class Post extends ActionBarActivity{
                 });
             }
         });
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String type = ((TextView) view).getText().toString();
+        if(type.equals("Fitness")) { selection=1; }
+        else if(type.equals("Maternal Health")) { selection=2; }
+        else if(type.equals("Diet")) { selection=3; }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

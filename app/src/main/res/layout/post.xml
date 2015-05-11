@@ -9,13 +9,43 @@
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Post in .."
+        android:id="@+id/textView"
+        android:layout_above="@+id/post_text"
+        android:layout_alignParentLeft="true"
+        android:gravity="center" />
+
+    <Spinner
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:id="@+id/spinner"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView3"
+        android:spinnerMode="dropdown"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_gravity="center_horizontal"
+        android:background="#5f3b928f" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/post_text"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:hint="What do you think?"
         android:gravity="top"
-        android:minHeight="100dp" />
+        android:minHeight="100dp"
+        android:background="#5f3b928f"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/post_button"

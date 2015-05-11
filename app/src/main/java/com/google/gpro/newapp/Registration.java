@@ -56,7 +56,7 @@ public class Registration extends ActionBarActivity implements AdapterView.OnIte
             public void onClick(View v) {
 
                 //get the data
-                String username = mUsername.getText().toString().trim();
+                String username = mUsername.getText().toString().toLowerCase();
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
                 String passwordV = vPassword.getText().toString().trim();

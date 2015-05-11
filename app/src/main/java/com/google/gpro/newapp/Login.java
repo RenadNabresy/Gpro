@@ -1,6 +1,5 @@
 package com.google.gpro.newapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,17 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gpro.newapp.R;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 
-public class Login extends Activity {
+public class Login extends ActionBarActivity {
 
 
-    protected EditText mEmail;
+    protected EditText mUserName;
     protected EditText mPassword;
     protected Button mLogin;
     protected Button mCreateAccountbtn;
@@ -36,7 +33,7 @@ public class Login extends Activity {
 
 
        //initialize
-        mEmail = (EditText)findViewById(R.id.Email);
+        mUserName = (EditText)findViewById(R.id.UserName);
         mPassword = (EditText)findViewById(R.id.Password);
         mLogin = (Button)findViewById(R.id.Login);
         mCreateAccountbtn=(Button)findViewById(R.id.CreateAccount);
@@ -46,21 +43,18 @@ public class Login extends Activity {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get user inputs
-                String useremail= mEmail.getText().toString().trim();
-                String userpassword= mPassword.getText().toString().trim();
-
-
-
+            //get user inputs
+            String userName= mUserName.getText().toString().toLowerCase();
+            String userPassword= mPassword.getText().toString().trim();
                 //login the user using parse
-                ParseUser.logInInBackground(useremail,userpassword,new LogInCallback() {
+                ParseUser.logInInBackground(userName,userPassword,new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
                         if (e==null){
                             //wow Success :]
-                            Toast.makeText(Login.this,"Welcome !"+ ParseUser.getCurrentUser().getUsername().toString() ,Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this,"Welcome "+ ParseUser.getCurrentUser().getUsername().toString() ,Toast.LENGTH_LONG).show();
                             //Take the user to home page
-                            Intent TakeUserHome=new Intent(Login.this,MainActivity.class);
+                            Intent TakeUserHome=new Intent(Login.this,HomePageFragment.class);
                             startActivity(TakeUserHome);
                         }else {
                             //Sorry ! A problem
@@ -82,6 +76,14 @@ public class Login extends Activity {
             }
         });
 
+        mCreateAccountbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent TakeUserHome = new Intent(Login.this, Registration.class);
+                startActivity(TakeUserHome);
+            }
+
+        });
     }
 
 
@@ -98,11 +100,6 @@ public class Login extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        /* if (id == R.id.SignOut) {
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }

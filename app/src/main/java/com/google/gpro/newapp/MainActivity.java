@@ -9,22 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.Parse;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.text.ParseException;
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
@@ -47,30 +37,6 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
 
 
-        // Enable Local Datastore.
-       // Parse.enableLocalDatastore(this);
-
-       // Parse.initialize(this, "01uXRlo3msYG9RffC5zewIKsbdvaXX9TfBcpBBDq", "4xqSbq48OpDaEIaLfgzyYMTLFam6qW0qVEaW8YR2");
-
-       // User user = new User("Renado","renad.92.rno@gmail.com","123123","2949728");
-
-     /*   ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
-
-        query.whereEqualTo("email", "renad.92.rn@gmail.com");
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> userList, com.parse.ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    byte[] data = "Working at Parse is great!".getBytes();
-                    ParseFile file = new ParseFile("resume.txt", data);
-                }
-            }
-        });
-*/
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -87,15 +53,23 @@ public class MainActivity extends ActionBarActivity
         Fragment objFragment = null;
         switch (position) {
             case 0:
-                objFragment = new Frag1();
+                objFragment = new HomePageFragment();
                 break;
             case 1:
-                objFragment = new Frag2();
+                objFragment = new Profile_Page_Fragment();
                 break;
             case 2:
-                objFragment = new Frag3();
+                objFragment = new Category1_Fragment();
+                break;
+            case 3:
+                objFragment = new Category2_Fragment();
+                break;
+            case 4:
+                objFragment = new Category3_Fragment();
                 break;
         }
+        onSectionAttached(position);
+        restoreActionBar();//change action bar title
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -106,17 +80,24 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 0:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.main_section);
                 break;
             case 1:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.profile);
                 break;
             case 2:
+                mTitle = getString(R.string.title_section1);
+                break;
+            case 3:
+                mTitle = getString(R.string.title_section2);
+                break;
+            case 4:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
     }
 
+    //change title
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -128,12 +109,15 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
-        //inflater.inflate(R.menu.global, menu);
-        //showGlobalContextActionBar();
-        getMenuInflater().inflate(R.menu.global, menu);
-        return true;
-
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            // Only show items in the action bar relevant to this screen
+            // if the drawer is not showing. Otherwise, let the drawer
+            // decide what to show in the action bar.
+            getMenuInflater().inflate(R.menu.global, menu);
+            restoreActionBar();
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -142,7 +126,6 @@ public class MainActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-
         int id = item.getItemId();
         if (id == R.id.SignOut) {
             (ParseUser.getCurrentUser()).logOut();
@@ -150,6 +133,7 @@ public class MainActivity extends ActionBarActivity
             finish();
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -182,7 +166,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_1, container, false);
+            View rootView = inflater.inflate(R.layout.posts_show_fragment, container, false);
             return rootView;
         }
 

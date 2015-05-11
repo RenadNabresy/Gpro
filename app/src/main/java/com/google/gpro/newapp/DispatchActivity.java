@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 /**
