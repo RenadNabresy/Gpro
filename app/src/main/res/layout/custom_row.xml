@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#aa53a005">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -10,8 +11,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/post_grid"
-        android:background="@drawable/back"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:columnCount="3"
+        android:columnOrderPreserved="false">
 
         <com.parse.ParseImageView
             android:layout_width="70dp"
@@ -23,36 +25,38 @@
             android:layout_margin="5dp"
             android:layout_rowSpan="2"
             android:focusable="false"
-            android:layout_gravity="fill" />
+            android:layout_gravity="fill"
+            android:background="#ff90c2cd" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="30dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Profile Name"
             android:id="@+id/profile_name"
             android:layout_row="0"
             android:layout_column="1"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:background="#ff90c2cd" />
 
         <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textView4"
+            android:layout_row="0"
+            android:layout_column="2" />
+
+        <TextView
+            android:layout_width="200dp"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="post details"
             android:id="@+id/post_time_date"
             android:layout_row="1"
-            android:layout_column="1"/>
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/empty"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:layout_rowSpan="2"
-            android:layout_marginTop="5dp" />
+            android:layout_column="1"
+            android:background="#ff90c2cd" />
 
         <TextView
             android:layout_width="match_parent"
@@ -60,22 +64,22 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="post content lalala"
             android:id="@+id/post_text"
-            android:layout_row="2"
+            android:layout_row="3"
             android:layout_column="0"
             android:layout_columnSpan="2"
             android:layout_gravity="fill_horizontal"
-            android:background="@drawable/box"
-            android:layout_margin="5dp"
+            android:background="#ffffff"
             android:paddingLeft="5dp"
             android:padding="5dp"
             android:paddingRight="5dp"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp" />
 
         <com.parse.ParseImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/post_image"
-            android:layout_row="3"
+            android:layout_row="4"
             android:layout_column="0"
             android:layout_columnSpan="2"
             android:layout_margin="5dp" />
@@ -84,14 +88,23 @@
             android:id="@+id/toggleButton"
             android:layout_width="80px"
             android:layout_height="60px"
-            android:layout_row="4"
+            android:layout_row="5"
             android:layout_column="0"
             android:layout_columnSpan="1"
             style="@style/toggleButton"
             android:background="@drawable/ic_toggle_bg"
             android:checked="false"
-            android:layout_margin="5dp"
             android:layout_marginLeft="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="no like"
+            android:id="@+id/textView2"
+            android:layout_row="5"
+            android:layout_column="1" />
+
 
 
 

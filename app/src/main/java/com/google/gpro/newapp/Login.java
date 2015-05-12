@@ -52,7 +52,7 @@ public class Login extends ActionBarActivity {
                     public void done(ParseUser parseUser, ParseException e) {
                         if (e==null){
                             //wow Success :]
-                            Toast.makeText(Login.this,"Welcome "+ ParseUser.getCurrentUser().getUsername().toString() ,Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this,"Welcome "+ ParseUser.getCurrentUser().getUsername() ,Toast.LENGTH_LONG).show();
                             //Take the user to home page
                             Intent TakeUserHome=new Intent(Login.this,HomePageFragment.class);
                             startActivity(TakeUserHome);

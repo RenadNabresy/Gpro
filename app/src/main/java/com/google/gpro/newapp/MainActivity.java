@@ -59,12 +59,15 @@ public class MainActivity extends ActionBarActivity
                 objFragment = new Profile_Page_Fragment();
                 break;
             case 2:
-                objFragment = new Category1_Fragment();
+                objFragment = new MedicalID();
                 break;
             case 3:
-                objFragment = new Category2_Fragment();
+                objFragment = new Category1_Fragment();
                 break;
             case 4:
+                objFragment = new Category2_Fragment();
+                break;
+            case 5:
                 objFragment = new Category3_Fragment();
                 break;
         }
@@ -86,12 +89,15 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.profile);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.medical_id);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section1);
                 break;
             case 4:
+                mTitle = getString(R.string.title_section2);
+                break;
+            case 5:
                 mTitle = getString(R.string.title_section3);
                 break;
         }

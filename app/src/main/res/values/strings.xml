@@ -3,6 +3,7 @@
 
     <string name="main_section">Home</string>
     <string name="profile">Profile</string>
+    <string name="medical_id">Medical ID</string>
     <string name="title_section1">Fitness</string>
     <string name="title_section2">Maternal Health</string>
     <string name="title_section3">Diet</string>

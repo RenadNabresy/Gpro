@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="16dp"
+    android:background="#ff90c2cd">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,8 +34,7 @@
         android:spinnerMode="dropdown"
         android:focusableInTouchMode="true"
         android:focusable="true"
-        android:layout_gravity="center_horizontal"
-        android:background="#5f3b928f" />
+        android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <EditText
@@ -44,8 +44,9 @@
         android:hint="What do you think?"
         android:gravity="top"
         android:minHeight="100dp"
-        android:background="#5f3b928f"
-        android:focusable="true" />
+        android:background="@drawable/box"
+        android:focusable="true"
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/post_button"
