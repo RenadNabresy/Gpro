@@ -53,6 +53,11 @@ public class Post extends ActionBarActivity implements AdapterView.OnItemSelecte
                     return;
                 }
 
+                String type = "Fitness";
+                if(selection==1){type ="Fitness";}
+                else if(selection==2){type ="Maternal Health";}
+                else if(selection==3){type ="Diet";}
+
                 final ProgressDialog dig=new ProgressDialog(Post.this);
                 dig.setTitle("Posting !!");
                 dig.setMessage("please wait .");
@@ -61,8 +66,10 @@ public class Post extends ActionBarActivity implements AdapterView.OnItemSelecte
                 ParseObject post = new ParseObject("Post");
                 post.put("text",newPost);
                 post.put("C_num",selection);
+                post.put("category",type );
                 post.put("createdBy",ParseUser.getCurrentUser().getObjectId());
                 post.put("NumOfLikes",0);
+                post.put("NumOfComments",0);
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

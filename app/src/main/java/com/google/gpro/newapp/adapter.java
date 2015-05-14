@@ -1,12 +1,18 @@
 package com.google.gpro.newapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -14,7 +20,6 @@ import android.widget.ToggleButton;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
-import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
@@ -22,29 +27,26 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.text.ParseException;
 import java.util.List;
 
 
-/**
- * Created by Horizon on 5/6/2015.
- */
 public class adapter extends ArrayAdapter<ParseObject>{
 
     public adapter(Context context, List<ParseObject> post) {
-        super(context,R.layout.custom_row, post);
+        super(context,R.layout.post_view, post);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater myInflater = LayoutInflater.from(getContext());
-        final View customView = myInflater.inflate(R.layout.custom_row, parent, false);
+        final View customView = myInflater.inflate(R.layout.post_view, parent, false);
 
         TextView postDetails = (TextView)customView.findViewById(R.id.post_time_date);
-        TextView categoryView = (TextView)customView.findViewById(R.id.textView4);
+        TextView categoryView = (TextView)customView.findViewById(R.id.category);
         TextView postContent = (TextView)customView.findViewById(R.id.post_text);
         ImageView postImage = (ImageView)customView.findViewById(R.id.post_image);
         final ToggleButton like = (ToggleButton)customView.findViewById(R.id.toggleButton);
+        ImageView comment_view = (ImageView)customView.findViewById(R.id.comment_btn);
 
         final ParseObject post = getItem(position);
         String createdBy = post.get("createdBy").toString();
@@ -98,11 +100,71 @@ public class adapter extends ArrayAdapter<ParseObject>{
             likeButtonState("Like3",post, like);
         }
 
-
-
-
+        // show number of likes
         final TextView numberOfLikes = (TextView)customView.findViewById(R.id.textView2);
         numberOfLikes.setText(post.get("NumOfLikes")+ " Likes");
+
+        // show number of comments
+        final TextView numberOfComments = (TextView)customView.findViewById(R.id.click);
+        numberOfComments.setText(post.get("NumOfComments")+ " Comments");
+
+        // show the comments
+        numberOfComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog d;
+                if (post.getInt("C_num") ==  1) {
+                    d = new CustomDialog(getContext(),"Comment1",post.getObjectId());
+                    d.show();
+                } else if (post.getInt("C_num") == 2) {
+                    d = new CustomDialog(getContext(),"Comment2",post.getObjectId());
+                    d.show();
+                } else if (post.getInt("C_num") == 3) {
+                    d = new CustomDialog(getContext(),"Comment3",post.getObjectId());
+                    d.show();
+                }
+
+            }
+        });
+
+        // click to add a comment
+        comment_view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+                final EditText input = new EditText(getContext());
+
+                dialogBuilder.setTitle("Comment");
+                dialogBuilder.setMessage("write your comment ..");
+                dialogBuilder.setView(input);
+                dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String comment = input.getText().toString().trim();
+                        if (!comment.matches("")) {
+                            if (post.getInt("C_num") == 1) {
+                                addComment(comment, post, "Comment1", numberOfComments);
+                            } else if (post.getInt("C_num") == 2) {
+                                addComment(comment, post, "Comment2", numberOfComments);
+                            } else if (post.getInt("C_num") == 3) {
+                                addComment(comment, post, "Comment3", numberOfComments);
+                            }
+                            Toast.makeText(getContext(), "comment saved", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
+            }
+
+        });
 
         //set the post image if there is
 
@@ -143,8 +205,9 @@ public class adapter extends ArrayAdapter<ParseObject>{
          likeObject.saveInBackground(new SaveCallback() {
              @Override
              public void done(com.parse.ParseException e) {
-                 if(e==null){
-                     // Create a pointer to an object of class Point with id dlkj83d
+                 if(e==null){ //update the number of likes without retrieving a complete raw
+
+                     // Create a pointer to an object of class Post with id
                      ParseObject post1 = ParseObject.createWithoutData("Post", post.getObjectId());
 
                      // Increment the current value of the likes key by 1
@@ -180,7 +243,6 @@ public class adapter extends ArrayAdapter<ParseObject>{
                 if(e==null) {
                     for (ParseObject delete : parseObjects) {//one raw will be deleted
                         delete.deleteInBackground();
-                        Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
 
                         // Create a pointer to an object of class Post with id
                         ParseObject post1 = ParseObject.createWithoutData("Post", post.getObjectId());
@@ -221,5 +283,37 @@ public class adapter extends ArrayAdapter<ParseObject>{
             }
         });
     }
-}
 
+    private void addComment(String text, final ParseObject post, String commentTable, final TextView numberOfComments){
+        ParseObject commentObject = new ParseObject(commentTable);
+        commentObject.put("post_id", post.getObjectId());
+        commentObject.put("user_id", ParseUser.getCurrentUser().getObjectId());
+        commentObject.put("user_name", ParseUser.getCurrentUser().getUsername());
+        commentObject.put("comment", text);
+        commentObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                // Create a pointer to an object of class Post with id
+                ParseObject post1 = ParseObject.createWithoutData("Post", post.getObjectId());
+
+                // Increment the current value of the likes key by 1
+                post1.increment("NumOfComments");
+
+                // Save
+                post1.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(com.parse.ParseException e) {
+                        if (e == null) {
+                            // Saved successfully.
+                            numberOfComments.setText(post.get("NumOfComments")+ " Comments");
+                        } else {
+                            // The save failed.
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+}

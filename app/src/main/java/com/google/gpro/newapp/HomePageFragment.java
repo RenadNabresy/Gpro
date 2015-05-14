@@ -30,7 +30,7 @@ public class HomePageFragment extends Fragment {
         super.onStart();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Post");
-        //query.whereEqualTo("C_num", 1);
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> postList, ParseException e) {
